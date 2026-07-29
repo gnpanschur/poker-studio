@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { Copy, LogOut, Play, Clock, Trophy, BookOpen } from 'lucide-react';
+import { Copy, LogOut, Play, Clock, Trophy, BookOpen, Maximize, Minimize } from 'lucide-react';
 import PlayerSeat from './PlayerSeat';
 import ActionControls from './ActionControls';
 import ChatAndEmoji from './ChatAndEmoji';
@@ -25,6 +25,36 @@ function Card({ card }) {
 
 export default function PokerTable({ roomState, onStartGame, onSendAction, onSendChat, onSendEmoji, onLeaveRoom, activeEmojiBursts }) {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Sync fullscreen state
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  };
 
   if (!roomState || !roomState.gameState) return null;
 
@@ -101,6 +131,30 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Blue Fullscreen Button */}
+          <button
+            onClick={toggleFullscreen}
+            title={isFullscreen ? 'Vollbild beenden' : 'Vollbild aktivieren'}
+            style={{
+              background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+              border: '1px solid rgba(59, 130, 246, 0.6)',
+              color: '#ffffff',
+              padding: '6px 14px',
+              borderRadius: '8px',
+              fontSize: '0.85rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)',
+              transition: 'all 0.2s ease-in-out'
+            }}
+          >
+            {isFullscreen ? <Minimize size={15} /> : <Maximize size={15} />}
+            <span>{isFullscreen ? 'Beenden' : 'Vollbild'}</span>
+          </button>
+
           <button
             onClick={() => setIsGuideOpen(true)}
             style={{

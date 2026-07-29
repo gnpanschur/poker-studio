@@ -349,6 +349,8 @@ class GameEngine {
   }
 
   finishHand() {
+    this.state = 'SHOWDOWN';
+
     // Process eliminations
     this.room.players.forEach(p => {
       if (!p.isSpectator && p.chips === 0) {
@@ -365,13 +367,13 @@ class GameEngine {
       return;
     }
 
-    // Auto start next hand after 10 seconds (doppelt so lang sichtbar)
+    // Auto start next hand after 25 seconds (lang genug sichtbar für alle Spieler)
     this.autoNextHandTimer = setTimeout(() => {
       this.startNewHand();
       if (this.room.io) {
         this.room.broadcastState();
       }
-    }, 10000);
+    }, 25000);
   }
 
   getStateForPlayer(playerId) {

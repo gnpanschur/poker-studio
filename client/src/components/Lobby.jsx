@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Users, ShieldCheck, Trophy, Sparkles, BookOpen } from 'lucide-react';
+import { Play, Users, ShieldCheck, Trophy, Sparkles, BookOpen, Maximize, Minimize } from 'lucide-react';
 import GuideModal from './GuideModal';
 
 export default function Lobby({ onCreateRoom, onJoinRoom, errorMsg, setErrorMsg }) {
@@ -7,6 +7,35 @@ export default function Lobby({ onCreateRoom, onJoinRoom, errorMsg, setErrorMsg 
   const [roomCode, setRoomCode] = useState('');
   const [mode, setMode] = useState('menu'); // 'menu' | 'join'
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  };
 
   useEffect(() => {
     // Check if URL has ?room=CODE parameter
@@ -50,7 +79,51 @@ export default function Lobby({ onCreateRoom, onJoinRoom, errorMsg, setErrorMsg 
     }}>
       <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
 
-      <div className="glass-panel" style={{ width: '100%', maxWidth: '480px', padding: '36px 32px' }}>
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '480px', padding: '32px 28px' }}>
+        {/* Top Header Controls (Guide & Fullscreen) */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <button
+            onClick={() => setIsGuideOpen(true)}
+            style={{
+              background: 'rgba(245, 158, 11, 0.15)',
+              border: '1px solid rgba(245, 158, 11, 0.35)',
+              color: '#fbbf24',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              fontSize: '0.85rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontWeight: 700,
+              cursor: 'pointer'
+            }}
+          >
+            <BookOpen size={15} /> Spielanleitung
+          </button>
+
+          <button
+            onClick={toggleFullscreen}
+            title={isFullscreen ? 'Vollbild beenden' : 'Vollbild aktivieren'}
+            style={{
+              background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+              border: '1px solid rgba(59, 130, 246, 0.6)',
+              color: '#ffffff',
+              padding: '6px 14px',
+              borderRadius: '8px',
+              fontSize: '0.85rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)',
+              transition: 'all 0.2s ease-in-out'
+            }}
+          >
+            {isFullscreen ? <Minimize size={15} /> : <Maximize size={15} />}
+            <span>{isFullscreen ? 'Beenden' : 'Vollbild'}</span>
+          </button>
+        </div>
         {/* Logo & Header */}
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div style={{

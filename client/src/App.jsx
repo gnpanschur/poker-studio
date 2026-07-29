@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSocket } from './hooks/useSocket';
+import { useWakeLock } from './hooks/useWakeLock';
 import Lobby from './components/Lobby';
 import PokerTable from './components/PokerTable';
 import ReconnectModal from './components/ReconnectModal';
@@ -7,6 +8,9 @@ import './styles/index.css';
 import './styles/Table.css';
 
 export default function App() {
+  // Prevent mobile standby during poker sessions with Wake Lock API & visibilitychange listener
+  useWakeLock(true);
+
   const {
     isConnected,
     roomState,
