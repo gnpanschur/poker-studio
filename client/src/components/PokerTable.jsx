@@ -151,27 +151,6 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
           >
             <BookOpen size={15} /> Anleitung
           </button>
-
-          <button
-            onClick={onLeaveRoom}
-            title="Raum verlassen"
-            style={{
-              background: 'rgba(239, 68, 68, 0.18)',
-              border: '1px solid rgba(239, 68, 68, 0.4)',
-              color: '#ef4444',
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease-in-out',
-              boxShadow: '0 2px 8px rgba(239, 68, 68, 0.25)'
-            }}
-          >
-            <X size={18} />
-          </button>
         </div>
       </div>
 
