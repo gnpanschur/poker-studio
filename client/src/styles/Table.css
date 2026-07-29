@@ -542,6 +542,45 @@
     bottom: -16px;
   }
 
+  /* Seat 0 (My Player Seat) enlarged on mobile */
+  .player-seat.seat-0 {
+    width: 104px;
+    bottom: -30px;
+  }
+  .seat-0 .player-box {
+    padding: 5px 6px;
+    border-radius: 10px;
+  }
+  .seat-0 .player-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+  }
+  .seat-0 .player-name {
+    font-size: 0.76rem;
+    max-width: 90px;
+  }
+  .seat-0 .player-chips {
+    font-size: 0.76rem;
+  }
+  .seat-0 .seat-cards {
+    margin-top: -12px;
+    margin-bottom: 3px;
+    gap: 3px;
+  }
+  .seat-0 .seat-cards .playing-card {
+    width: 42px;
+    height: 58px;
+    font-size: 0.88rem;
+    padding: 3px 4px;
+    border-radius: 6px;
+  }
+  .seat-0 .seat-cards .playing-card .card-suit-center {
+    font-size: 1.3rem;
+    margin-top: -3px;
+  }
+
   /* Action Controls / Footer Buttons Mobile */
   .action-controls-bar {
     padding: 8px 12px;
@@ -635,6 +674,38 @@
     font-size: 0.58rem;
     padding: 1px 4px;
     bottom: -14px;
+  }
+
+  /* Seat 0 (My Player Seat) enlarged on small mobile */
+  .player-seat.seat-0 {
+    width: 94px;
+    bottom: -25px;
+  }
+  .seat-0 .player-box {
+    padding: 4px 5px;
+    border-radius: 8px;
+  }
+  .seat-0 .player-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  .seat-0 .player-name {
+    font-size: 0.7rem;
+    max-width: 82px;
+  }
+  .seat-0 .player-chips {
+    font-size: 0.7rem;
+  }
+  .seat-0 .seat-cards .playing-card {
+    width: 36px;
+    height: 50px;
+    font-size: 0.78rem;
+    padding: 2px 3px;
+  }
+  .seat-0 .seat-cards .playing-card .card-suit-center {
+    font-size: 1.1rem;
+    margin-top: -3px;
   }
 
   .poker-felt {
