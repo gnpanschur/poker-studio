@@ -100,20 +100,25 @@
   pointer-events: none;
 }
 
-/* Action Toast Banner in felt */
+/* Action Toast Banner under Header */
 .action-announcement-toast {
-  position: absolute;
-  top: 25px;
-  background: rgba(15, 23, 42, 0.92);
-  border: 1px solid var(--accent-gold);
+  position: fixed;
+  top: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid var(--accent-gold);
   color: #fff;
-  padding: 6px 20px;
+  padding: 7px 22px;
   border-radius: 20px;
   font-weight: 800;
   font-size: 0.92rem;
-  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
-  z-index: 35;
+  box-shadow: 0 4px 25px rgba(245, 158, 11, 0.45);
+  z-index: 90;
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 /* Center Community Cards & Pot */
