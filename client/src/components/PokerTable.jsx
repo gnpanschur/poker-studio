@@ -158,9 +158,9 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
       <div className="poker-table-wrapper">
         <div className="poker-felt">
           
-          {/* Action Announcement Toast on top of felt */}
+          {/* Action Announcement Toast under header */}
           {lastActionAnnouncement && state !== 'SHOWDOWN' && state !== 'ENDED' && (
-            <div className="action-announcement-toast animate-deal">
+            <div className="action-announcement-toast">
               {lastActionAnnouncement}
             </div>
           )}
