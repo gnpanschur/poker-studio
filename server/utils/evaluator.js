@@ -42,6 +42,26 @@ function getCombinations(cards, k = 5) {
   return result;
 }
 
+function formatCardName(val) {
+  const names = {
+    14: 'Ass',
+    13: 'König',
+    12: 'Dame',
+    11: 'Bube'
+  };
+  return names[val] || `${val}`;
+}
+
+function formatCardPlural(val) {
+  const plurals = {
+    14: 'Asse',
+    13: 'Könige',
+    12: 'Damen',
+    11: 'Buben'
+  };
+  return plurals[val] || `${val}er`;
+}
+
 // Evaluate exact 5 cards
 function evaluate5CardHand(cards) {
   // Sort cards descending by value
@@ -105,7 +125,7 @@ function evaluate5CardHand(cards) {
     return {
       rank: HAND_RANKS.STRAIGHT_FLUSH,
       tieBreakers: [straightHigh],
-      desc: `${HAND_NAMES_DE[HAND_RANKS.STRAIGHT_FLUSH]} (${straightHigh} hoch)`
+      desc: `${HAND_NAMES_DE[HAND_RANKS.STRAIGHT_FLUSH]} (${formatCardName(straightHigh)} hoch)`
     };
   }
 
@@ -115,7 +135,7 @@ function evaluate5CardHand(cards) {
     return {
       rank: HAND_RANKS.FOUR_OF_A_KIND,
       tieBreakers: [quadVal, kicker],
-      desc: `${HAND_NAMES_DE[HAND_RANKS.FOUR_OF_A_KIND]} (${quadVal}er)`
+      desc: `${HAND_NAMES_DE[HAND_RANKS.FOUR_OF_A_KIND]} (${formatCardPlural(quadVal)})`
     };
   }
 
@@ -125,7 +145,7 @@ function evaluate5CardHand(cards) {
     return {
       rank: HAND_RANKS.FULL_HOUSE,
       tieBreakers: [tripVal, pairVal],
-      desc: `${HAND_NAMES_DE[HAND_RANKS.FULL_HOUSE]} (${tripVal}er über ${pairVal}er)`
+      desc: `${HAND_NAMES_DE[HAND_RANKS.FULL_HOUSE]} (${formatCardPlural(tripVal)} über ${formatCardPlural(pairVal)})`
     };
   }
 
@@ -133,7 +153,7 @@ function evaluate5CardHand(cards) {
     return {
       rank: HAND_RANKS.FLUSH,
       tieBreakers: values,
-      desc: `${HAND_NAMES_DE[HAND_RANKS.FLUSH]} (${values[0]} hoch)`
+      desc: `${HAND_NAMES_DE[HAND_RANKS.FLUSH]} (${formatCardName(values[0])} hoch)`
     };
   }
 
@@ -141,7 +161,7 @@ function evaluate5CardHand(cards) {
     return {
       rank: HAND_RANKS.STRAIGHT,
       tieBreakers: [straightHigh],
-      desc: `${HAND_NAMES_DE[HAND_RANKS.STRAIGHT]} (${straightHigh} hoch)`
+      desc: `${HAND_NAMES_DE[HAND_RANKS.STRAIGHT]} (${formatCardName(straightHigh)} hoch)`
     };
   }
 
@@ -151,7 +171,7 @@ function evaluate5CardHand(cards) {
     return {
       rank: HAND_RANKS.THREE_OF_A_KIND,
       tieBreakers: [tripVal, ...kickers],
-      desc: `${HAND_NAMES_DE[HAND_RANKS.THREE_OF_A_KIND]} (${tripVal}er)`
+      desc: `${HAND_NAMES_DE[HAND_RANKS.THREE_OF_A_KIND]} (${formatCardPlural(tripVal)})`
     };
   }
 
@@ -162,7 +182,7 @@ function evaluate5CardHand(cards) {
     return {
       rank: HAND_RANKS.TWO_PAIR,
       tieBreakers: [highPair, lowPair, kicker],
-      desc: `${HAND_NAMES_DE[HAND_RANKS.TWO_PAIR]} (${highPair}er und ${lowPair}er)`
+      desc: `${HAND_NAMES_DE[HAND_RANKS.TWO_PAIR]} (${formatCardPlural(highPair)} und ${formatCardPlural(lowPair)})`
     };
   }
 
@@ -172,14 +192,14 @@ function evaluate5CardHand(cards) {
     return {
       rank: HAND_RANKS.ONE_PAIR,
       tieBreakers: [pairVal, ...kickers],
-      desc: `${HAND_NAMES_DE[HAND_RANKS.ONE_PAIR]} (${pairVal}er)`
+      desc: `${HAND_NAMES_DE[HAND_RANKS.ONE_PAIR]} (${formatCardPlural(pairVal)})`
     };
   }
 
   return {
     rank: HAND_RANKS.HIGH_CARD,
     tieBreakers: values,
-    desc: `${HAND_NAMES_DE[HAND_RANKS.HIGH_CARD]} (${values[0]})`
+    desc: `${HAND_NAMES_DE[HAND_RANKS.HIGH_CARD]} (${formatCardName(values[0])})`
   };
 }
 
