@@ -280,8 +280,8 @@ export default function Lobby({ onCreateRoom, onJoinRoom, errorMsg, setErrorMsg 
               </label>
               <input
                 type="text"
-                placeholder="z. B. POKERX"
-                maxLength={6}
+                placeholder="z. B. PKRX"
+                maxLength={4}
                 value={roomCode}
                 onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                 style={{

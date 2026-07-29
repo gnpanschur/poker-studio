@@ -4,9 +4,9 @@ const Room = require('../models/Room');
 const rooms = new Map();
 
 function generateRoomCode() {
-  const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let code = '';
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 4; i++) {
     code += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return rooms.has(code) ? generateRoomCode() : code;
