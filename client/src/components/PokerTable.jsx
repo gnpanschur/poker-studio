@@ -104,9 +104,6 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
       {/* Top Header Bar */}
       <div className="top-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div className="brand-title">
-            <span>♠</span> Poker Studio
-          </div>
           <div className="room-badge" onClick={copyRoomCode} style={{ cursor: 'pointer' }}>
             RAUM: {roomCode} <Copy size={13} style={{ marginLeft: '4px' }} />
           </div>
