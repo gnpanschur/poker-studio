@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { Copy, LogOut, Play, Clock, Trophy, BookOpen, Maximize, Minimize } from 'lucide-react';
+import { Copy, Play, Clock, Trophy, BookOpen, Maximize, Minimize, X } from 'lucide-react';
 import PlayerSeat from './PlayerSeat';
 import ActionControls from './ActionControls';
 import GuideModal from './GuideModal';
@@ -154,20 +154,23 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
 
           <button
             onClick={onLeaveRoom}
+            title="Raum verlassen"
             style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              color: '#94a3b8',
-              padding: '6px 14px',
-              borderRadius: '8px',
-              fontSize: '0.85rem',
+              background: 'rgba(239, 68, 68, 0.18)',
+              border: '1px solid rgba(239, 68, 68, 0.4)',
+              color: '#ef4444',
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              fontWeight: 600
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease-in-out',
+              boxShadow: '0 2px 8px rgba(239, 68, 68, 0.25)'
             }}
           >
-            <LogOut size={16} /> Verlassen
+            <X size={18} />
           </button>
         </div>
       </div>
