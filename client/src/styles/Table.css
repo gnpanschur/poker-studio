@@ -474,3 +474,192 @@
   box-shadow: 0 0 40px rgba(245, 158, 11, 0.5);
   max-width: 90%;
 }
+
+/* Mobile Responsive Adjustments for Player Seats (1-6) */
+@media (max-width: 768px) {
+  .player-seat {
+    width: 76px;
+  }
+
+  .seat-0 { bottom: -25px; }
+  .seat-1 { bottom: 25px; left: 8px; }
+  .seat-2 { top: 25px; left: 8px; }
+  .seat-3 { top: -25px; }
+  .seat-4 { top: 25px; right: 8px; }
+  .seat-5 { bottom: 25px; right: 8px; }
+
+  .player-box {
+    padding: 3px 2px;
+    border-radius: 8px;
+  }
+
+  .player-avatar {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+  }
+
+  .player-name {
+    font-size: 0.65rem;
+    max-width: 68px;
+  }
+
+  .player-chips {
+    font-size: 0.65rem;
+  }
+
+  .seat-cards {
+    margin-top: -8px;
+    margin-bottom: 2px;
+    gap: 2px;
+  }
+
+  .seat-cards .playing-card {
+    width: 32px;
+    height: 46px;
+    font-size: 0.72rem;
+    padding: 2px 3px;
+    border-radius: 4px;
+  }
+
+  .seat-cards .playing-card .card-suit-center {
+    font-size: 1rem;
+    margin-top: -3px;
+  }
+
+  .badge-dealer {
+    width: 17px;
+    height: 17px;
+    font-size: 0.62rem;
+    top: -6px;
+    right: -6px;
+  }
+
+  .action-bubble {
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    bottom: -16px;
+  }
+
+  /* Action Controls / Footer Buttons Mobile */
+  .action-controls-bar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .action-buttons-group {
+    gap: 6px;
+    justify-content: space-between;
+  }
+
+  .btn-action {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    letter-spacing: 0;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .slider-row {
+    gap: 8px;
+  }
+
+  .quick-bet-buttons {
+    gap: 4px;
+  }
+
+  .quick-btn {
+    padding: 3px 6px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-seat {
+    width: 66px;
+  }
+
+  .seat-0 { bottom: -20px; }
+  .seat-1 { bottom: 12px; left: 4px; }
+  .seat-2 { top: 12px; left: 4px; }
+  .seat-3 { top: -20px; }
+  .seat-4 { top: 12px; right: 4px; }
+  .seat-5 { bottom: 12px; right: 4px; }
+
+  .player-box {
+    padding: 2px 1px;
+    border-radius: 6px;
+  }
+
+  .player-avatar {
+    width: 22px;
+    height: 22px;
+    font-size: 0.68rem;
+    margin-bottom: 1px;
+  }
+
+  .player-name {
+    font-size: 0.6rem;
+    max-width: 58px;
+  }
+
+  .player-chips {
+    font-size: 0.6rem;
+  }
+
+  .seat-cards .playing-card {
+    width: 26px;
+    height: 38px;
+    font-size: 0.62rem;
+    padding: 1px 2px;
+  }
+
+  .seat-cards .playing-card .card-suit-center {
+    font-size: 0.85rem;
+    margin-top: -4px;
+  }
+
+  .badge-dealer {
+    width: 15px;
+    height: 15px;
+    font-size: 0.55rem;
+    top: -5px;
+    right: -5px;
+  }
+
+  .action-bubble {
+    font-size: 0.58rem;
+    padding: 1px 4px;
+    bottom: -14px;
+  }
+
+  .poker-felt {
+    height: 420px;
+    border-width: 8px;
+  }
+
+  /* Extra Small Mobile Footer Buttons */
+  .action-controls-bar {
+    padding: 6px 8px;
+    gap: 6px;
+  }
+
+  .action-buttons-group {
+    gap: 4px;
+  }
+
+  .btn-action {
+    padding: 7px 5px;
+    font-size: 0.72rem;
+    border-radius: 6px;
+  }
+
+  .quick-btn {
+    padding: 2px 4px;
+    font-size: 0.7rem;
+  }
+}

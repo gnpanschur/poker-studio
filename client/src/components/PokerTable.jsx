@@ -3,7 +3,6 @@ import confetti from 'canvas-confetti';
 import { Copy, LogOut, Play, Clock, Trophy, BookOpen, Maximize, Minimize } from 'lucide-react';
 import PlayerSeat from './PlayerSeat';
 import ActionControls from './ActionControls';
-import ChatAndEmoji from './ChatAndEmoji';
 import GuideModal from './GuideModal';
 
 const SUIT_SYMBOLS = { s: '♠', h: '♥', d: '♦', c: '♣' };
@@ -313,13 +312,6 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
         gameState={gameState}
         myPlayer={myPlayer}
         onSendAction={onSendAction}
-      />
-
-      {/* Chat & Emoji Drawer */}
-      <ChatAndEmoji
-        chatMessages={chatMessages}
-        onSendChat={onSendChat}
-        onSendEmoji={onSendEmoji}
       />
     </div>
   );
