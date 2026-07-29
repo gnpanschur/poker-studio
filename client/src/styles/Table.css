@@ -544,41 +544,45 @@
 
   /* Seat 0 (My Player Seat) enlarged on mobile */
   .player-seat.seat-0 {
-    width: 104px;
-    bottom: -30px;
+    width: 125px;
+    bottom: -36px;
+    z-index: 30;
   }
   .seat-0 .player-box {
-    padding: 5px 6px;
-    border-radius: 10px;
+    padding: 7px 8px;
+    border-radius: 12px;
   }
   .seat-0 .player-avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 0.85rem;
-    margin-bottom: 2px;
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+    margin-bottom: 3px;
   }
   .seat-0 .player-name {
-    font-size: 0.76rem;
-    max-width: 90px;
+    font-size: 0.82rem;
+    max-width: 110px;
   }
   .seat-0 .player-chips {
-    font-size: 0.76rem;
+    font-size: 0.82rem;
   }
   .seat-0 .seat-cards {
-    margin-top: -12px;
-    margin-bottom: 3px;
-    gap: 3px;
+    margin-top: -16px;
+    margin-bottom: 4px;
+    gap: 5px;
   }
   .seat-0 .seat-cards .playing-card {
-    width: 42px;
-    height: 58px;
-    font-size: 0.88rem;
-    padding: 3px 4px;
-    border-radius: 6px;
+    width: 48px;
+    height: 68px;
+    font-size: 1rem;
+    padding: 4px 6px;
+    border-radius: 7px;
+  }
+  .seat-0 .seat-cards .playing-card .card-corner-top {
+    font-size: 0.9rem;
   }
   .seat-0 .seat-cards .playing-card .card-suit-center {
-    font-size: 1.3rem;
-    margin-top: -3px;
+    font-size: 1.5rem;
+    margin-top: -4px;
   }
 
   /* Action Controls / Footer Buttons Mobile */
@@ -678,33 +682,43 @@
 
   /* Seat 0 (My Player Seat) enlarged on small mobile */
   .player-seat.seat-0 {
-    width: 94px;
-    bottom: -25px;
+    width: 112px;
+    bottom: -30px;
+    z-index: 30;
   }
   .seat-0 .player-box {
-    padding: 4px 5px;
-    border-radius: 8px;
+    padding: 6px 7px;
+    border-radius: 10px;
   }
   .seat-0 .player-avatar {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+    width: 32px;
+    height: 32px;
+    font-size: 0.88rem;
   }
   .seat-0 .player-name {
-    font-size: 0.7rem;
-    max-width: 82px;
+    font-size: 0.76rem;
+    max-width: 100px;
   }
   .seat-0 .player-chips {
-    font-size: 0.7rem;
+    font-size: 0.76rem;
+  }
+  .seat-0 .seat-cards {
+    margin-top: -14px;
+    margin-bottom: 4px;
+    gap: 4px;
   }
   .seat-0 .seat-cards .playing-card {
-    width: 36px;
-    height: 50px;
-    font-size: 0.78rem;
-    padding: 2px 3px;
+    width: 42px;
+    height: 60px;
+    font-size: 0.88rem;
+    padding: 3px 4px;
+    border-radius: 6px;
+  }
+  .seat-0 .seat-cards .playing-card .card-corner-top {
+    font-size: 0.82rem;
   }
   .seat-0 .seat-cards .playing-card .card-suit-center {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     margin-top: -3px;
   }
 
