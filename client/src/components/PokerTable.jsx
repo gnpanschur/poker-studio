@@ -109,23 +109,6 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
           </div>
         </div>
 
-        {/* Blind Timer Widget */}
-        {blindInfo && (
-          <div className="blind-timer-widget">
-            <div>
-              <span style={{ color: 'var(--text-secondary)' }}>Blinds: </span>
-              <strong style={{ color: '#fff' }}>{blindInfo.smallBlind}/{blindInfo.bigBlind} 🪙</strong>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Clock size={14} color="var(--accent-gold)" />
-              <span className="timer-count">{formatTime(blindInfo.remainingSeconds)}</span>
-            </div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              (Nächste: {blindInfo.nextSmallBlind}/{blindInfo.nextBigBlind})
-            </div>
-          </div>
-        )}
-
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {/* Blue Fullscreen Button */}
           <button
