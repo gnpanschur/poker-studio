@@ -367,13 +367,13 @@ class GameEngine {
       return;
     }
 
-    // Auto start next hand after 25 seconds (lang genug sichtbar für alle Spieler)
+    // Auto start next hand after 20 seconds
     this.autoNextHandTimer = setTimeout(() => {
       this.startNewHand();
       if (this.room.io) {
         this.room.broadcastState();
       }
-    }, 25000);
+    }, 20000);
   }
 
   getStateForPlayer(playerId) {
