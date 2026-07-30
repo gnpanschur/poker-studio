@@ -167,10 +167,32 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
 
           {/* Table Center: Pot & Community Cards */}
           <div className="table-center">
-            {pot > 0 && (
-              <div className="pot-badge">
-                POT: {pot} 🪙
+            {state === 'SHOWDOWN' && showdownResult ? (
+              <div className="showdown-badge">
+                <span className="showdown-badge-title">🎉 Showdown:</span>
+                {(() => {
+                  const winnerItems = [];
+                  showdownResult.details?.forEach(detail => {
+                    detail.winners?.forEach(w => {
+                      winnerItems.push(w);
+                    });
+                  });
+                  return winnerItems.map((w, idx) => (
+                    <span key={idx} className="showdown-winner-item">
+                      {idx > 0 && <span className="showdown-divider">•</span>}
+                      <strong className="showdown-winner-name">{w.name}</strong> gewinnt{' '}
+                      <span className="showdown-winner-amount">{w.amount} 🪙</span>
+                      {w.desc && <span className="showdown-winner-desc">({w.desc})</span>}
+                    </span>
+                  ));
+                })()}
               </div>
+            ) : (
+              pot > 0 && (
+                <div className="pot-badge">
+                  POT: {pot} 🪙
+                </div>
+              )
             )}
 
             <div className="community-cards">
@@ -231,24 +253,6 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
               />
             );
           })}
-
-          {/* Showdown / Winner Overlay */}
-          {state === 'SHOWDOWN' && showdownResult && (
-            <div className="showdown-banner">
-              <h3 style={{ color: 'var(--accent-gold)', marginBottom: '8px', fontSize: '1.3rem' }}>
-                🎉 Showdown Ergebnisse
-              </h3>
-              {showdownResult.details.map((detail, idx) => (
-                <div key={idx} style={{ fontSize: '0.95rem', margin: '4px 0' }}>
-                  {detail.winners.map(w => (
-                    <div key={w.id} style={{ color: '#fff' }}>
-                      <strong>{w.name}</strong> gewinnt {w.amount} 🪙 ({w.desc})
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
 
           {/* Tournament Champion Banner */}
           {state === 'ENDED' && winner && (
