@@ -69,7 +69,7 @@ export default function ActionControls({ gameState, myPlayer, onSendAction }) {
           disabled={!isMyTurn}
           onClick={() => onSendAction('fold')}
         >
-          Passen (Fold)
+          Passen
         </button>
 
         {canCheck ? (
@@ -86,7 +86,7 @@ export default function ActionControls({ gameState, myPlayer, onSendAction }) {
             disabled={!isMyTurn}
             onClick={() => onSendAction('call')}
           >
-            Mitgehen (Call {callAmount} 🪙)
+            Mitgehen ({callAmount} 🪙)
           </button>
         )}
 

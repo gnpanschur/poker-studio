@@ -445,6 +445,40 @@ export default function GuideModal({ isOpen, onClose }) {
           {activeTab === 'flow' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                padding: '12px 14px',
+                borderRadius: '12px',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '10px',
+                flexWrap: 'wrap'
+              }}>
+                <div>
+                  <strong style={{ color: '#ef4444', fontSize: '0.9rem', display: 'block' }}>🎬 Video-Erklärung:</strong>
+                  <span style={{ color: '#cbd5e1', fontSize: '0.85rem' }}>Texas No-Limit Holdem Poker - Regeln und Spielfluss</span>
+                </div>
+                <a
+                  href="https://www.youtube.com/watch?v=h-1WyU5Wqsw"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: '#ef4444',
+                    color: '#ffffff',
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    fontSize: '0.8rem',
+                    fontWeight: 800,
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  ▶ Video auf YouTube ansehen
+                </a>
+              </div>
+
+              <div style={{
                 background: 'rgba(59, 130, 246, 0.08)',
                 padding: '12px 14px',
                 borderRadius: '12px',
@@ -571,7 +605,7 @@ export default function GuideModal({ isOpen, onClose }) {
           {activeTab === 'actions' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '12px 14px', borderRadius: '10px', borderLeft: '4px solid #ef4444' }}>
-                <strong style={{ color: '#ef4444' }}>Passen (Fold):</strong> Du steigst aus der aktuellen Hand aus und legst deine Karten ab. Du verlierst deinen bisher gesetzten Einsatz, riskierst aber keine weiteren Chips.
+                <strong style={{ color: '#ef4444' }}>Karten ablegen (Fold):</strong> Du steigst aus der aktuellen Hand aus und legst deine Karten ab. Du verlierst deinen bisher gesetzten Einsatz, riskierst aber keine weiteren Chips.
               </div>
 
               <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '12px 14px', borderRadius: '10px', borderLeft: '4px solid #3b82f6' }}>
@@ -599,8 +633,28 @@ export default function GuideModal({ isOpen, onClose }) {
           padding: '12px 20px',
           background: '#121a2b',
           borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          textAlign: 'right'
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '10px',
+          flexWrap: 'wrap'
         }}>
+          <a
+            href="https://www.youtube.com/watch?v=h-1WyU5Wqsw"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: '#ef4444',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            ▶ YouTube Video: Texas No-Limit Holdem Poker - Regeln und Spielfluss
+          </a>
           <button
             onClick={onClose}
             style={{

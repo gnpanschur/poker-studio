@@ -46,6 +46,36 @@ class GameEngine {
     return -1;
   }
 
+  checkMinBetEliminations() {
+    const blinds = this.room.blindTimer.getCurrentBlinds();
+    const minBet = blinds.big;
+
+    this.room.players.forEach(p => {
+      if (!p.isSpectator && p.chips < minBet) {
+        p.isSpectator = true;
+        p.lastAction = 'Mindesteinsatz nicht vorhanden';
+        const msg = `${p.name} ist Zuschauer, Mindesteinsatz nicht vorhanden.`;
+        this.lastActionAnnouncement = msg;
+        this.room.addChatMessage('System', msg);
+      }
+    });
+  }
+
+  resetForNewTournament() {
+    if (this.autoNextHandTimer) {
+      clearTimeout(this.autoNextHandTimer);
+      this.autoNextHandTimer = null;
+    }
+    this.state = 'WAITING';
+    this.winner = null;
+    this.showdownResult = null;
+    this.lastActionAnnouncement = null;
+    this.handCount = 0;
+    this.communityCards = [];
+    this.pot = 0;
+    this.dealerSeatIndex = 0;
+  }
+
   // Start new game hand
   startNewHand() {
     if (this.autoNextHandTimer) {
@@ -53,7 +83,9 @@ class GameEngine {
       this.autoNextHandTimer = null;
     }
 
-    const playingPlayers = this.getPlayingPlayers().filter(p => p.chips > 0);
+    this.checkMinBetEliminations();
+
+    const playingPlayers = this.getPlayingPlayers();
     if (playingPlayers.length < 2) {
       this.state = 'WAITING';
       return false;
@@ -161,9 +193,9 @@ class GameEngine {
     switch (actionType) {
       case 'fold':
         player.isFolded = true;
-        player.lastAction = 'Gefaltet (Fold)';
-        this.lastActionAnnouncement = `❌ ${player.name} hat gepasst (Fold)`;
-        this.room.addChatMessage('System', `❌ ${player.name} hat gepasst (Fold).`);
+        player.lastAction = 'hat gepasst';
+        this.lastActionAnnouncement = `❌ ${player.name} hat gepasst`;
+        this.room.addChatMessage('System', `❌ ${player.name} hat gepasst.`);
         break;
 
       case 'check':
@@ -252,7 +284,7 @@ class GameEngine {
         details: [{
           name: 'Haupt-Pot',
           amount: this.pot,
-          winners: [{ id: winner.id, name: winner.name, amount: this.pot, desc: 'Alle anderen Spieler gefaltet' }]
+          winners: [{ id: winner.id, name: winner.name, amount: this.pot, desc: 'Alle anderen Spieler haben gepasst' }]
         }]
       };
       this.finishHand();
@@ -351,29 +383,29 @@ class GameEngine {
   finishHand() {
     this.state = 'SHOWDOWN';
 
-    // Process eliminations
-    this.room.players.forEach(p => {
-      if (!p.isSpectator && p.chips === 0) {
-        p.isSpectator = true;
-        p.lastAction = 'Ausgeschieden (Spectator)';
-      }
-    });
+    // Process eliminations for players without minimum bet
+    this.checkMinBetEliminations();
 
     // Check if tournament has ended (only 1 player with chips remaining)
-    const survivors = this.room.players.filter(p => p.chips > 0);
-    if (survivors.length === 1 && this.getPlayingPlayers().length <= 1) {
-      this.state = 'ENDED';
-      this.winner = survivors[0];
+    const survivors = this.getPlayingPlayers();
+    if (survivors.length === 1) {
+      this.autoNextHandTimer = setTimeout(() => {
+        this.state = 'ENDED';
+        this.winner = survivors[0];
+        if (this.room.io) {
+          this.room.broadcastState();
+        }
+      }, 6000);
       return;
     }
 
-    // Auto start next hand after 20 seconds
+    // Auto start next hand after 10 seconds
     this.autoNextHandTimer = setTimeout(() => {
       this.startNewHand();
       if (this.room.io) {
         this.room.broadcastState();
       }
-    }, 20000);
+    }, 10000);
   }
 
   getStateForPlayer(playerId) {

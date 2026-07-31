@@ -159,7 +159,7 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
         <div className="poker-felt">
           
           {/* Action Announcement Toast under header */}
-          {lastActionAnnouncement && state !== 'SHOWDOWN' && state !== 'ENDED' && (
+          {lastActionAnnouncement && state !== 'ENDED' && (
             <div className="action-announcement-toast">
               {lastActionAnnouncement}
             </div>
@@ -169,7 +169,6 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
           <div className="table-center">
             {state === 'SHOWDOWN' && showdownResult ? (
               <div className="showdown-badge">
-                <span className="showdown-badge-title">🎉 Showdown:</span>
                 {(() => {
                   const winnerItems = [];
                   showdownResult.details?.forEach(detail => {
@@ -177,14 +176,29 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
                       winnerItems.push(w);
                     });
                   });
-                  return winnerItems.map((w, idx) => (
-                    <span key={idx} className="showdown-winner-item">
-                      {idx > 0 && <span className="showdown-divider">•</span>}
-                      <strong className="showdown-winner-name">{w.name}</strong> gewinnt{' '}
-                      <span className="showdown-winner-amount">{w.amount} 🪙</span>
-                      {w.desc && <span className="showdown-winner-desc">({w.desc})</span>}
-                    </span>
-                  ));
+                  return (
+                    <>
+                      <div className="showdown-badge-line1">
+                        <span className="showdown-badge-title">🎉</span>
+                        {winnerItems.map((w, idx) => (
+                          <span key={idx} className="showdown-winner-item">
+                            {idx > 0 && <span className="showdown-divider">•</span>}
+                            <strong className="showdown-winner-name">{w.name}</strong> gewinnt{' '}
+                            <span className="showdown-winner-amount">{w.amount} 🪙</span>
+                          </span>
+                        ))}
+                      </div>
+                      {winnerItems.some(w => w.desc) && (
+                        <div className="showdown-badge-line2">
+                          {winnerItems.map((w, idx) => w.desc ? (
+                            <span key={idx} className="showdown-winner-desc">
+                              {idx > 0 && ' • '}({w.desc})
+                            </span>
+                          ) : null)}
+                        </div>
+                      )}
+                    </>
+                  );
                 })()}
               </div>
             ) : (
@@ -257,16 +271,42 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
           {/* Tournament Champion Banner */}
           {state === 'ENDED' && winner && (
             <div className="showdown-banner" style={{ background: 'linear-gradient(135deg, #1e1b4b, #0f172a)' }}>
-              <Trophy size={48} color="#f59e0b" style={{ margin: '0 auto 10px' }} />
-              <h2 style={{ color: '#f59e0b', fontSize: '1.6rem', fontWeight: 900 }}>
-                TURNIER SIEGER!
-              </h2>
-              <p style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 800, marginTop: '6px' }}>
-                👑 {winner.name} 👑
-              </p>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '4px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                <Trophy size={28} color="#f59e0b" />
+                <h2 style={{ color: '#f59e0b', fontSize: '1.4rem', fontWeight: 900, margin: 0 }}>
+                  TURNIER SIEGER: 👑 {winner.name} 👑
+                </h2>
+              </div>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginTop: '6px', marginBottom: 0 }}>
                 Hat alle Chips gewonnen!
               </p>
+
+              {isHost ? (
+                <button
+                  onClick={onStartGame}
+                  style={{
+                    marginTop: '16px',
+                    padding: '12px 28px',
+                    borderRadius: '30px',
+                    background: 'linear-gradient(135deg, #10b981, #059669)',
+                    color: '#fff',
+                    fontWeight: 800,
+                    fontSize: '1rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '0 0 25px rgba(16, 185, 129, 0.4)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  <Play size={18} /> Neues Spiel?
+                </button>
+              ) : (
+                <p style={{ marginTop: '16px', color: '#94a3b8', fontSize: '0.85rem', fontStyle: 'italic' }}>
+                  Warte auf Raumleiter für ein neues Spiel...
+                </p>
+              )}
             </div>
           )}
 

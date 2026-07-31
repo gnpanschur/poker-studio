@@ -17,6 +17,9 @@ class Room {
           smallBlind: newBlinds.small,
           bigBlind: newBlinds.big
         });
+        if (this.game.state !== 'WAITING' && this.game.state !== 'ENDED') {
+          this.game.checkMinBetEliminations();
+        }
         this.broadcastState();
       }
     });
@@ -106,6 +109,24 @@ class Room {
     }
     if (this.players.length < 2) {
       return { success: false, error: 'Mindestens 2 Spieler erforderlich' };
+    }
+
+    if (this.game.state === 'ENDED') {
+      this.blindTimer.reset();
+      this.players.forEach(p => {
+        p.chips = 1000;
+        p.isSpectator = false;
+        p.isFolded = false;
+        p.isAllIn = false;
+        p.cards = [];
+        p.currentBet = 0;
+        p.totalHandBet = 0;
+        p.lastAction = null;
+        p.evalResult = null;
+        p.hasActedInStreet = false;
+      });
+      this.game.resetForNewTournament();
+      this.addChatMessage('System', '🔄 Ein neues Spiel wurde vom Raumleiter gestartet!');
     }
 
     this.blindTimer.start();
