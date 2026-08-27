@@ -36,7 +36,9 @@ export default function Lobby({
 
   // Load saved name & check URL room parameter (?room=CODE or ?code=CODE)
   useEffect(() => {
-    const savedName = localStorage.getItem(GAME_LOBBY_CONFIG.storageKeyName) || '';
+    const savedName = localStorage.getItem(GAME_LOBBY_CONFIG.storageKeyName) ||
+                      localStorage.getItem('lobby_player_name') ||
+                      localStorage.getItem('player_name') || '';
     if (savedName) setPlayerName(savedName);
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -51,7 +53,6 @@ export default function Lobby({
         const timer = setTimeout(() => {
           onJoinRoom(code, savedName, (res) => {
             if (res && res.success) {
-              // Automatisches Ready-Schalten nach Beitritt über WhatsApp-Link
               setTimeout(() => {
                 onToggleReady();
               }, 300);
@@ -62,6 +63,12 @@ export default function Lobby({
       }
     }
   }, []);
+
+  const savePlayerName = (name) => {
+    localStorage.setItem(GAME_LOBBY_CONFIG.storageKeyName, name);
+    localStorage.setItem('lobby_player_name', name);
+    localStorage.setItem('player_name', name);
+  };
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement && !document.webkitFullscreenElement) {
@@ -86,7 +93,7 @@ export default function Lobby({
       setErrorMsg('Bitte gib einen Spielernamen ein!');
       return;
     }
-    localStorage.setItem(GAME_LOBBY_CONFIG.storageKeyName, name);
+    savePlayerName(name);
     onCreateRoom(name);
   };
 
@@ -102,16 +109,14 @@ export default function Lobby({
       setErrorMsg('Bitte gib einen gültigen 4-stelligen Raumcode ein!');
       return;
     }
-    localStorage.setItem(GAME_LOBBY_CONFIG.storageKeyName, name);
+    savePlayerName(name);
 
     onJoinRoom(code, name, (res) => {
       if (res && res.success) {
-        // Anforderung 6: Automatisches Ready bei WhatsApp-Link Beitritt (?room=CODE)
-        if (isUrlJoin) {
-          setTimeout(() => {
-            onToggleReady();
-          }, 300);
-        }
+        // Automatisches Ready-Schalten bei Raumbeitritt
+        setTimeout(() => {
+          onToggleReady();
+        }, 300);
       }
     });
   };
