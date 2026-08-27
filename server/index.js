@@ -3,6 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const path = require('path');
+const LobbyManager = require('./lobby/LobbyManager');
 const { initSockets } = require('./sockets/gameHandler');
 
 const app = express();
@@ -19,8 +20,16 @@ const io = new Server(server, {
   }
 });
 
+// Initialize LobbyManager
+const lobbyManager = new LobbyManager(io, {
+  gameId: 'poker_studio',
+  gameTitle: 'Poker Studio',
+  minPlayers: 2,
+  maxPlayers: 6
+});
+
 // Initialize socket handlers
-initSockets(io);
+initSockets(io, lobbyManager);
 
 // Serve static frontend build files in production (Render.com deployment)
 const clientBuildPath = path.join(__dirname, '../client/dist');

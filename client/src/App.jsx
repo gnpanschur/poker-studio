@@ -6,19 +6,23 @@ import PokerTable from './components/PokerTable';
 import ReconnectModal from './components/ReconnectModal';
 import './styles/index.css';
 import './styles/Table.css';
+import './styles/lobby.css';
 
 export default function App() {
-  // Prevent mobile standby during poker sessions with Wake Lock API & visibilitychange listener
+  // Prevent mobile standby during poker sessions
   useWakeLock(true);
 
   const {
+    socket,
     isConnected,
+    lobbyState,
     roomState,
     activeEmojiBursts,
     errorMsg,
     setErrorMsg,
     createRoom,
     joinRoom,
+    toggleReady,
     startGame,
     sendAction,
     sendChat,
@@ -26,14 +30,22 @@ export default function App() {
     leaveRoom
   } = useSocket();
 
+  // Switch to Poker Table view when active game state is present
+  const isInGame = !!(roomState && roomState.gameState && roomState.gameState.state !== 'WAITING');
+
   return (
     <>
       <ReconnectModal isConnected={isConnected} />
 
-      {!roomState ? (
+      {!isInGame ? (
         <Lobby
           onCreateRoom={createRoom}
           onJoinRoom={joinRoom}
+          onToggleReady={toggleReady}
+          onStartGame={startGame}
+          onLeaveRoom={leaveRoom}
+          lobbyState={lobbyState}
+          socketId={socket?.id}
           errorMsg={errorMsg}
           setErrorMsg={setErrorMsg}
         />

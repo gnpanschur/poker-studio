@@ -1,75 +1,37 @@
 const Room = require('../models/Room');
 
-// In-Memory store for active rooms
+// In-Memory store for active poker rooms
 const rooms = new Map();
 
-function generateRoomCode() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let code = '';
-  for (let i = 0; i < 4; i++) {
-    code += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return rooms.has(code) ? generateRoomCode() : code;
-}
+function initSockets(io, lobbyManager) {
+  // Callback when host starts game from Lobby
+  lobbyManager.onGameStart((lobbyRoom, hostSocketId) => {
+    console.log(`[GameHandler] Starting Poker Game for room ${lobbyRoom.code}`);
 
-function initSockets(io) {
+    const hostPlayer = lobbyRoom.players.find(p => p.isHost) || lobbyRoom.players[0];
+    if (!hostPlayer) return;
+
+    // Create Poker Room model
+    const pokerRoom = new Room(lobbyRoom.code, hostPlayer.id, hostPlayer.name);
+    pokerRoom.io = io;
+    rooms.set(lobbyRoom.code, pokerRoom);
+
+    // Add other players to Poker Room
+    lobbyRoom.players.forEach(p => {
+      if (p.id !== hostPlayer.id) {
+        pokerRoom.addPlayer(p.id, p.name);
+      }
+    });
+
+    // Start Poker game engine & broadcast initial hand
+    pokerRoom.startGame(pokerRoom.hostId);
+  });
+
   io.on('connection', (socket) => {
+    // Attach central LobbyManager socket listeners
+    lobbyManager.attachSocketListeners(socket);
 
-    // Create Room
-    socket.on('create_room', ({ nickname }, callback) => {
-      if (!nickname || nickname.trim() === '') {
-        return callback({ success: false, error: 'Bitte einen Spitznamen eingeben' });
-      }
-
-      const code = generateRoomCode();
-      const room = new Room(code, socket.id, nickname.trim());
-      room.io = io;
-      rooms.set(code, room);
-
-      socket.join(code);
-
-      const hostPlayer = room.players[0];
-      callback({
-        success: true,
-        roomCode: code,
-        sessionToken: hostPlayer.sessionToken,
-        playerId: hostPlayer.id
-      });
-
-      room.broadcastState();
-    });
-
-    // Join Room
-    socket.on('join_room', ({ roomCode, nickname }, callback) => {
-      const code = roomCode ? roomCode.toUpperCase().trim() : '';
-      const room = rooms.get(code);
-
-      if (!room) {
-        return callback({ success: false, error: 'Raum nicht gefunden' });
-      }
-      if (!nickname || nickname.trim() === '') {
-        return callback({ success: false, error: 'Bitte einen Spitznamen eingeben' });
-      }
-
-      const result = room.addPlayer(socket.id, nickname.trim());
-      if (!result.success) {
-        return callback(result);
-      }
-
-      socket.join(code);
-
-      callback({
-        success: true,
-        roomCode: code,
-        sessionToken: result.sessionToken,
-        playerId: result.player.id
-      });
-
-      room.addChatMessage('System', `${nickname} hat den Raum betreten.`);
-      room.broadcastState();
-    });
-
-    // Reconnect Session
+    // Reconnect Session (during active game)
     socket.on('reconnect_session', ({ roomCode, sessionToken }, callback) => {
       const code = roomCode ? roomCode.toUpperCase().trim() : '';
       const room = rooms.get(code);
@@ -96,19 +58,10 @@ function initSockets(io) {
       room.broadcastState();
     });
 
-    // Start Game
-    socket.on('start_game', ({ roomCode, sessionToken }, callback) => {
-      const room = rooms.get(roomCode);
-      if (!room) return callback({ success: false, error: 'Raum nicht gefunden' });
-
-      const result = room.startGame(sessionToken);
-      if (callback) callback(result);
-    });
-
     // Player Action (Fold, Check, Call, Raise, All-In)
     socket.on('player_action', ({ roomCode, actionType, amount }, callback) => {
       const room = rooms.get(roomCode);
-      if (!room) return callback({ success: false, error: 'Raum nicht gefunden' });
+      if (!room) return callback && callback({ success: false, error: 'Raum nicht gefunden' });
 
       const result = room.game.handlePlayerAction(socket.id, actionType, amount);
       if (result.success) {
@@ -143,13 +96,12 @@ function initSockets(io) {
       }
     });
 
-    // Handle Disconnect
+    // Handle Disconnect during game
     socket.on('disconnect', () => {
       rooms.forEach((room) => {
         const player = room.players.find(p => p.id === socket.id);
         if (player) {
           room.disconnectPlayer(socket.id);
-          // If all players left and room is empty, clean up after 10 mins
           const activeConnected = room.players.filter(p => !p.isDisconnected);
           if (activeConnected.length === 0) {
             setTimeout(() => {
