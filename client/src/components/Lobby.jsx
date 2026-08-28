@@ -35,10 +35,16 @@ export default function Lobby({
   }, []);
 
   // Load saved name & check URL room parameter (?room=CODE or ?code=CODE)
+  const getSavedPlayerName = () => {
+    return localStorage.getItem(GAME_LOBBY_CONFIG.storageKeyName) ||
+           localStorage.getItem('lobby_player_name') ||
+           localStorage.getItem('player_name') ||
+           sessionStorage.getItem(GAME_LOBBY_CONFIG.storageKeyName) || '';
+  };
+
+  // Load saved name & check URL room parameter (?room=CODE or ?code=CODE)
   useEffect(() => {
-    const savedName = localStorage.getItem(GAME_LOBBY_CONFIG.storageKeyName) ||
-                      localStorage.getItem('lobby_player_name') ||
-                      localStorage.getItem('player_name') || '';
+    const savedName = getSavedPlayerName();
     if (savedName) setPlayerName(savedName);
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -51,13 +57,7 @@ export default function Lobby({
       // Automatisches Beitreten wenn vorhergehender Name bereits gespeichert ist
       if (savedName && code.length === 4) {
         const timer = setTimeout(() => {
-          onJoinRoom(code, savedName, (res) => {
-            if (res && res.success) {
-              setTimeout(() => {
-                onToggleReady();
-              }, 300);
-            }
-          });
+          onJoinRoom(code, savedName);
         }, 300);
         return () => clearTimeout(timer);
       }
@@ -65,9 +65,17 @@ export default function Lobby({
   }, []);
 
   const savePlayerName = (name) => {
+    if (!name) return;
     localStorage.setItem(GAME_LOBBY_CONFIG.storageKeyName, name);
     localStorage.setItem('lobby_player_name', name);
     localStorage.setItem('player_name', name);
+    sessionStorage.setItem(GAME_LOBBY_CONFIG.storageKeyName, name);
+  };
+
+  const getEffectivePlayerName = () => {
+    const trimmed = playerName.trim();
+    if (trimmed) return trimmed;
+    return getSavedPlayerName().trim();
   };
 
   const toggleFullscreen = () => {
@@ -88,7 +96,7 @@ export default function Lobby({
 
   const handleCreateRoom = (e) => {
     if (e) e.preventDefault();
-    const name = playerName.trim();
+    const name = getEffectivePlayerName();
     if (!name) {
       setErrorMsg('Bitte gib einen Spielernamen ein!');
       return;
@@ -99,7 +107,7 @@ export default function Lobby({
 
   const handleJoinRoom = (e) => {
     if (e) e.preventDefault();
-    const name = playerName.trim();
+    const name = getEffectivePlayerName();
     const code = roomCode.trim().toUpperCase();
     if (!name) {
       setErrorMsg('Bitte gib einen Spielernamen ein!');
@@ -111,14 +119,7 @@ export default function Lobby({
     }
     savePlayerName(name);
 
-    onJoinRoom(code, name, (res) => {
-      if (res && res.success) {
-        // Automatisches Ready-Schalten bei Raumbeitritt
-        setTimeout(() => {
-          onToggleReady();
-        }, 300);
-      }
-    });
+    onJoinRoom(code, name);
   };
 
   const handleCopyCode = () => {
@@ -218,7 +219,11 @@ export default function Lobby({
                 maxLength={14}
                 value={playerName}
                 onChange={(e) => {
-                  setPlayerName(e.target.value);
+                  const val = e.target.value;
+                  setPlayerName(val);
+                  if (val.trim()) {
+                    savePlayerName(val.trim());
+                  }
                   if (errorMsg) setErrorMsg(null);
                 }}
                 onKeyDown={(e) => {
@@ -345,7 +350,7 @@ export default function Lobby({
                   onClick={onToggleReady}
                   className={`btn ${me?.isReady ? 'btn-success' : 'btn-secondary'}`}
                 >
-                  {me?.isReady ? 'Bereit ✓ (Ändern)' : 'Ready schalten'}
+                  {me?.isReady ? 'Bereit ✓' : 'Nicht bereit'}
                 </button>
               ) : (
                 <button

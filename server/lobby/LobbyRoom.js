@@ -58,7 +58,7 @@ class LobbyRoom {
       id: socketId,
       name: cleanName,
       isHost: isHost,
-      isReady: isHost ? true : false, // Host ist automatisch ready
+      isReady: true, // Sofort bereit beim Beitreten
       joinedAt: Date.now()
     };
 
@@ -156,7 +156,7 @@ class LobbyRoom {
   resetToLobby() {
     this.status = 'lobby';
     this.players.forEach(p => {
-      p.isReady = p.isHost ? true : false;
+      p.isReady = true;
     });
   }
 
