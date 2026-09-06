@@ -100,11 +100,11 @@
   pointer-events: none;
 }
 
-/* Action Toast Banner under Header */
+/* Action Toast Banner at Bottom */
 @keyframes toastAppear {
   0% {
     opacity: 0;
-    transform: translate(-50%, -15px) scale(0.85);
+    transform: translate(-50%, 15px) scale(0.85);
   }
   100% {
     opacity: 1;
@@ -125,7 +125,7 @@
 
 .action-announcement-toast {
   position: fixed;
-  top: 68px;
+  bottom: 24px;
   left: 50%;
   transform: translate(-50%, 0);
   background: rgba(15, 23, 42, 0.95);
@@ -502,15 +502,15 @@
   white-space: nowrap;
 }
 
-/* Action Controls Bar (Bottom) */
+/* Action Controls Bar (Under Top Header) */
 .action-controls-bar {
   background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   z-index: 40;
 }
 

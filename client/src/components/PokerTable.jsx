@@ -149,11 +149,18 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
         </div>
       </div>
 
+      {/* Action Controls Bar - Positioned under Top Header */}
+      <ActionControls
+        gameState={gameState}
+        myPlayer={myPlayer}
+        onSendAction={onSendAction}
+      />
+
       {/* Main Table Felt Wrapper */}
       <div className="poker-table-wrapper">
         <div className="poker-felt">
           
-          {/* Action Announcement Toast under header */}
+          {/* Action Announcement Toast (Positioned at bottom) */}
           {lastActionAnnouncement && state !== 'ENDED' && (
             <div className="action-announcement-toast">
               {lastActionAnnouncement}
@@ -307,13 +314,6 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
 
         </div>
       </div>
-
-      {/* Action Controls Bar */}
-      <ActionControls
-        gameState={gameState}
-        myPlayer={myPlayer}
-        onSendAction={onSendAction}
-      />
     </div>
   );
 }
