@@ -10,33 +10,19 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Sync fullscreen state
+  // Handle ESC key to exit pseudo-fullscreen
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
     };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
-    };
-  }, []);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen]);
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen();
-      }
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
-    }
+    setIsFullscreen(prev => !prev);
   };
 
   if (!roomState || !roomState.gameState) return null;
@@ -82,7 +68,7 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
   };
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${isFullscreen ? 'fullscreen-mode' : ''}`}>
       <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
 
       {/* Top Header Bar */}
