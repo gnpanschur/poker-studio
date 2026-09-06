@@ -1,25 +1,5 @@
 import React from 'react';
-
-const SUIT_SYMBOLS = { s: '♠', h: '♥', d: '♦', c: '♣' };
-
-function Card({ card }) {
-  if (!card) return null;
-  if (card.hidden) {
-    return <div className="playing-card card-back animate-deal"></div>;
-  }
-
-  const isRed = card.suit === 'h' || card.suit === 'd';
-  return (
-    <div className={`playing-card ${isRed ? 'red' : 'black'} animate-deal`}>
-      <div className="card-corner-top">
-        <span>{card.name ? card.name.slice(0, -1) : card.value}</span>
-      </div>
-      <div className="card-suit-center">
-        {SUIT_SYMBOLS[card.suit] || card.suit}
-      </div>
-    </div>
-  );
-}
+import Card from './Card';
 
 export default function PlayerSeat({ player, relativeSeatIndex, isCurrentTurn, isDealer, emojiBurst }) {
   if (!player) {

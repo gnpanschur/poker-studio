@@ -4,23 +4,7 @@ import { Copy, Play, Clock, Trophy, BookOpen, Maximize, Minimize, X } from 'luci
 import PlayerSeat from './PlayerSeat';
 import ActionControls from './ActionControls';
 import GuideModal from './GuideModal';
-
-const SUIT_SYMBOLS = { s: '♠', h: '♥', d: '♦', c: '♣' };
-
-function Card({ card }) {
-  if (!card) return null;
-  const isRed = card.suit === 'h' || card.suit === 'd';
-  return (
-    <div className={`playing-card ${isRed ? 'red' : 'black'} animate-deal`}>
-      <div className="card-corner-top">
-        <span>{card.name ? card.name.slice(0, -1) : card.value}</span>
-      </div>
-      <div className="card-suit-center">
-        {SUIT_SYMBOLS[card.suit] || card.suit}
-      </div>
-    </div>
-  );
-}
+import Card from './Card';
 
 export default function PokerTable({ roomState, onStartGame, onSendAction, onSendChat, onSendEmoji, onLeaveRoom, activeEmojiBursts }) {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
