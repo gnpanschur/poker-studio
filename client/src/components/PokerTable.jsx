@@ -59,6 +59,13 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
   const myPlayer = players.find(p => p.id === myPlayerId) || players[0];
   const mySeatIndex = myPlayer ? myPlayer.seatIndex : 0;
 
+  // Check if it is currently the local player's turn
+  const isMyTurn = state !== 'WAITING' &&
+                   state !== 'SHOWDOWN' &&
+                   state !== 'ENDED' &&
+                   currentTurnSeatIndex === mySeatIndex &&
+                   myPlayer && !myPlayer.isFolded && !myPlayer.isSpectator;
+
   // Celebrate with confetti if tournament ends
   useEffect(() => {
     if (state === 'ENDED' && winner) {
@@ -93,7 +100,7 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
   };
 
   return (
-    <div className={`app-container ${isFullscreen ? 'fullscreen-mode' : ''}`}>
+    <div className={`app-container ${isFullscreen ? 'fullscreen-mode' : ''} ${isMyTurn ? 'is-my-turn' : ''}`}>
       <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
 
       {/* Top Header Bar */}
