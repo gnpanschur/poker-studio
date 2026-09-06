@@ -10,19 +10,44 @@ export default function PokerTable({ roomState, onStartGame, onSendAction, onSen
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Handle ESC key to exit pseudo-fullscreen
+  // Sync native fullscreen changes & handle ESC
   useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isNative = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      setIsFullscreen(isNative);
+    };
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isFullscreen) {
         setIsFullscreen(false);
       }
     };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isFullscreen]);
 
   const toggleFullscreen = () => {
-    setIsFullscreen(prev => !prev);
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      setIsFullscreen(true);
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().catch(() => {});
+      } else if (docEl.webkitRequestFullscreen) {
+        docEl.webkitRequestFullscreen();
+      }
+    } else {
+      setIsFullscreen(false);
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
   };
 
   if (!roomState || !roomState.gameState) return null;
