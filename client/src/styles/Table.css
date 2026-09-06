@@ -857,9 +857,9 @@
     bottom: -14px;
   }
 
-  /* Seat 0 (My Player Seat) enlarged ~70% on small mobile */
+  /* Seat 0 (My Player Seat) enlarged cards on small mobile */
   .player-seat.seat-0 {
-    width: 120px;
+    width: 130px;
     bottom: -30px;
     z-index: 30;
   }
@@ -880,22 +880,22 @@
     font-size: 0.76rem;
   }
   .seat-0 .seat-cards {
-    margin-top: -16px;
+    margin-top: -22px;
     margin-bottom: 4px;
-    gap: 5px;
+    gap: 6px;
   }
   .seat-0 .seat-cards .playing-card {
-    width: 45px;
-    height: 65px;
-    font-size: 0.9rem;
+    width: 54px;
+    height: 76px;
+    font-size: 1.05rem;
     padding: 3px 4px;
     border-radius: 6px;
   }
   .seat-0 .seat-cards .playing-card .card-corner-top {
-    font-size: 0.82rem;
+    font-size: 0.88rem;
   }
   .seat-0 .seat-cards .playing-card .card-suit-center {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-top: -3px;
   }
 
